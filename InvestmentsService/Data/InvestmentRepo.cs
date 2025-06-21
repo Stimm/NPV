@@ -18,4 +18,11 @@ public class InvestmentRepo : IInvestmentRepo
 
         return investments;
     }
+
+    public Investment GetInvestment(Guid id)
+    {
+        var investments = _context.Investment.Where(x => x.Id == id).First();
+
+        return investments;
+    }
 }

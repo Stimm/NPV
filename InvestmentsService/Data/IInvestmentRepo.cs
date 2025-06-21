@@ -6,4 +6,5 @@ namespace InvestmentsService.Data;
 public interface IInvestmentRepo
 {
     IEnumerable<Investment> GetAllInvestments();
+    Investment GetInvestment(Guid id);
 }
