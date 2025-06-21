@@ -1,0 +1,38 @@
+---
+  name: NPV
+
+  on:
+    pull_request:
+        branches:
+            - master
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                dotnet-version: [ '9.0.x' ]
+
+        env:
+            MODE: "dev"
+
+        steps:
+        - name: Run Super-Linter
+          uses: github/super-linter@v4
+          env:
+            DEFAULT_BRANCH: master
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            VALIDATE_MARKDOWN: false
+
+
+        - uses: actions/checkout@v4
+        - name: Setup dotnet
+          uses: actions/setup-dotnet@v4
+          with:
+            dotnet-version: '9.0.x'
+        - name: Install dependencies
+          run: dotnet restore
+        - name: Build
+          run: dotnet build --no-restore
+        - name: Test with the dotnet CLI
+          run: dotnet test --no-build
