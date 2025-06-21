@@ -2,43 +2,28 @@
   name: NPV
 
   on:
-    push:
-      branches-ignore: [master, main]
     pull_request:
-      branches: [master, main]
+        branches:
+            - master
 
-  jobs:
-    build:
-      name: Lint Code Base
-      runs-on: ubuntu-latest
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                dotnet-version: [ '9.0.x' ]
 
-      permissions:
-        contents: read
-        packages: read
-        statuses: write
+        env:
+            MODE: "dev"
 
-      steps:
-        - name: 'Cleanup build folder'
-          run: |
-            ls -la ./
-            rm -rf ./* || true
-            rm -rf ./.??* || true
-            ls -la ./
-
-        - uses: actions/checkout@v2
-
-        - name: Checkout Code
-          uses: actions/checkout@v4
-          with:
-            fetch-depth: 0
-
-        - name: Lint Code Base
-          uses: super-linter/super-linter@v5
+        steps:
+        - name: Run Super-Linter
+          uses: github/super-linter@v4
           env:
-            VALIDATE_ALL_CODEBASE: false
             DEFAULT_BRANCH: master
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             VALIDATE_MARKDOWN: false
+
 
         - uses: actions/checkout@v4
         - name: Setup dotnet
