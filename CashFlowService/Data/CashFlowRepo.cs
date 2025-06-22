@@ -19,7 +19,7 @@ namespace CashFlowService.Data
 
         public IEnumerable<CashFlow> GetAllCashFlowsForInvestment(Guid id)
         {
-            var cashFlows = _context.Cashflow.Where(x => x. == id);
+            var cashFlows = _context.Cashflow.Where(x => x.InvestmentId == id);
 
             return cashFlows;
         }
