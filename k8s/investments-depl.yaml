@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: investments-depl
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: investmentsservic
+    template:
+        metadata:
+            labels:
+                app: investmentsservic
+        spec:
+             containers:
+                - name: investmentsservic
+                  image: timothyryandublin/investmentsservice:latest
