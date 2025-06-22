@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CashFlowService.Controllers
 {
+    [ApiController]
     [Route("api/c/Investment/{investmentId}/[controller]")]
     public class CashFlowController : ControllerBase
     {

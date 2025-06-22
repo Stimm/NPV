@@ -1,8 +1,8 @@
-﻿using InvestmentsService.Models;
+﻿using CashFlowService.Models;
 
-namespace InvestmentsService.Data
+namespace CashFlowService.Data
 {
-    public static class PrepDb
+    public class PrepDb
     {
         public static void PrepDB(IApplicationBuilder app, bool isDevlopment)
         {
@@ -11,7 +11,7 @@ namespace InvestmentsService.Data
                 SeedDB(serviceScope.ServiceProvider.GetService<AppDbContext>(), isDevlopment);
             }
         }
-
+        
         private static void SeedDB(AppDbContext dbContext, bool isDevlopment)
         {
             if (!isDevlopment)
@@ -30,14 +30,19 @@ namespace InvestmentsService.Data
             }
         }
 
-
         private static void AddRanges(AppDbContext dbContext)
         {
             dbContext.Investment.AddRange(
-                new Investment() { Id = new Guid("5d7cee43-6b5b-4fbd-94f4-364dc0fe5218"), Name = "HosingLLM", Discription = "New built for rent estate in west dublin", DiscountRate = 10.0m },
-                new Investment() { Id = new Guid("796dbe00-7687-403a-9715-b128ca7b10df"), Name = "AIR&D", Discription = "LLM tool for avaiation devlopment", DiscountRate = 10.0m },
-                new Investment() { Id = new Guid("0f7bd25f-60cc-4701-b9bc-9765d631568c"), Name = "El'af", Discription = "Inperson fantasy experiance", DiscountRate = 10.0m }
-                );
+                new Investment() { Id = new Guid("47e77d94-05db-4b53-90d8-2074bc67204a"), ExternalId = new Guid("5d7cee43-6b5b-4fbd-94f4-364dc0fe5218") },
+                new Investment() { Id = new Guid(), ExternalId = new Guid("796dbe00-7687-403a-9715-b128ca7b10df")},
+                new Investment() { Id = new Guid(), ExternalId = new Guid("0f7bd25f-60cc-4701-b9bc-9765d631568c")}
+            );
+
+            dbContext.Cashflow.AddRange(
+                new CashFlow() { InvestmentId = new Guid("47e77d94-05db-4b53-90d8-2074bc67204a") },
+                new CashFlow() { InvestmentId = new Guid("47e77d94-05db-4b53-90d8-2074bc67204a") },
+                new CashFlow() { InvestmentId = new Guid("47e77d94-05db-4b53-90d8-2074bc67204a") }
+            );
 
             dbContext.SaveChanges();
             Console.WriteLine("Data added");

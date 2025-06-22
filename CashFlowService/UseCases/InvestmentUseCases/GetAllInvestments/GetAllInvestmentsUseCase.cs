@@ -9,7 +9,7 @@ namespace CashFlowService.UseCases.InvestmentUseCases.GetAllInvestments
         private readonly ICashFlowRepo _repo;
         private readonly IMapper _mapper;
 
-        public GetAllInvestmentsUseCase(CashFlowRepo repo, IMapper map)
+        public GetAllInvestmentsUseCase(ICashFlowRepo repo, IMapper map)
         {
             _repo = repo;
             _mapper = map;
