@@ -1,5 +1,6 @@
 ﻿using InvestmentsService.Dtos;
 using InvestmentsService.UseCases;
+using InvestmentsService.UseCases.CreateInvestmentUseCase;
 using InvestmentsService.UseCases.GetInvestmentById;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,11 +12,16 @@ public class InvestmentController : ControllerBase
 {
     private IGetAllInvestmentsUseCase _GetAllInvestments;
     private IGetInvestmentById _GetInvestmentById;
+    private ICreateInvestmentUseCase _createInvestment;
 
-    public InvestmentController(IGetAllInvestmentsUseCase getAllInvestmentsUseCase, IGetInvestmentById getInvestmentById)
+
+    public InvestmentController(IGetAllInvestmentsUseCase getAllInvestmentsUseCase, 
+        IGetInvestmentById getInvestmentById,
+        ICreateInvestmentUseCase createInvestmentUseCase)
     {
         _GetAllInvestments = getAllInvestmentsUseCase;
         _GetInvestmentById = getInvestmentById;
+        _createInvestment = createInvestmentUseCase;
     }
 
     [HttpGet]
@@ -39,5 +45,15 @@ public class InvestmentController : ControllerBase
         }
 
         return Ok(investment);
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<ReadInvestmentDto>> CreateInvestment(WriteInvestmentDto request)
+    {
+        Console.WriteLine("---> Create InvestmentEndPoint reached");
+
+        var responce = _createInvestment.ExacuteAsync(request);
+
+        return CreatedAtRoute(nameof(GetInvestmentById), new { id = responce.Id }, responce);
     }
 }

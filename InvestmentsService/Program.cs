@@ -1,5 +1,6 @@
 using InvestmentsService.Data;
 using InvestmentsService.UseCases;
+using InvestmentsService.UseCases.CreateInvestmentUseCase;
 using InvestmentsService.UseCases.GetInvestmentById;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
@@ -14,6 +15,7 @@ builder.Services.AddOpenApi();
 //UseCases
 builder.Services.AddScoped<IGetAllInvestmentsUseCase, GetAllInvestmentsUseCase>();
 builder.Services.AddScoped<IGetInvestmentById, GetInvestmentById>();
+builder.Services.AddScoped<ICreateInvestmentUseCase, CreateInvestmentUseCase>();
 //Reposotories
 builder.Services.AddScoped<IInvestmentRepo, InvestmentRepo>();
 
