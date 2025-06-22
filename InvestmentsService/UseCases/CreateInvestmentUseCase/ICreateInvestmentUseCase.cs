@@ -5,6 +5,6 @@ namespace InvestmentsService.UseCases.CreateInvestmentUseCase
 {
     public interface ICreateInvestmentUseCase
     {
-        ReadInvestmentDto ExacuteAsync(WriteInvestmentDto investment);
+        Task<ReadInvestmentDto> ExacuteAsync(WriteInvestmentDto investment);
     }
 }

@@ -2,6 +2,7 @@
 using InvestmentsService.Data;
 using InvestmentsService.Dtos;
 using InvestmentsService.Models;
+using InvestmentsService.SyncDataServices.Http;
 using InvestmentsService.UseCases.CreateInvestmentUseCase;
 using Moq;
 
@@ -35,15 +36,17 @@ namespace NPVTests.InvestmentServiceTests
 
             var mockedInvestmentRepo = new Mock<IInvestmentRepo>();
             var mockedInvestmentMapper = new Mock<IMapper>();
+            var mockedInvestmentsDataClient = new Mock<IInvestmentsDataClient>();
 
             mockedInvestmentRepo.Setup(m => m.CreateInvestment(investmentObject));
             mockedInvestmentMapper.Setup(m => m.Map<Investment>(It.IsAny<WriteInvestmentDto>())).Returns(investmentObject);
             mockedInvestmentMapper.Setup(m => m.Map<ReadInvestmentDto>(It.IsAny<Investment>())).Returns(readInvestmentDto);
-            var createInvestmentUseCase = new CreateInvestmentUseCase(mockedInvestmentRepo.Object, mockedInvestmentMapper.Object);
+            mockedInvestmentsDataClient.Setup(m => m.sendInvestmentsToCashFlow(readInvestmentDto));
+            var createInvestmentUseCase = new CreateInvestmentUseCase(mockedInvestmentRepo.Object, mockedInvestmentMapper.Object, mockedInvestmentsDataClient.Object);
 
             var result = createInvestmentUseCase.ExacuteAsync(writeInvestmentDto);
 
-            Assert.Equal(result.Id, readInvestmentDto.Id);
+            Assert.Equal(result.Result.Id, readInvestmentDto.Id);
         }
         
         [Fact]
@@ -67,18 +70,22 @@ namespace NPVTests.InvestmentServiceTests
 
             var mockedInvestmentRepo = new Mock<IInvestmentRepo>();
             var mockedInvestmentMapper = new Mock<IMapper>();
+            var mockedInvestmentsDataClient = new Mock<IInvestmentsDataClient>();
+
 
             mockedInvestmentRepo.Setup(m => m.CreateInvestment(investmentObject));
             mockedInvestmentMapper.Setup(m => m.Map<Investment>(It.IsAny<WriteInvestmentDto>())).Returns(investmentObject);
             mockedInvestmentMapper.Setup(m => m.Map<ReadInvestmentDto>(It.IsAny<Investment>())).Returns(readInvestmentDto);
-            var createInvestmentUseCase = new CreateInvestmentUseCase(mockedInvestmentRepo.Object, mockedInvestmentMapper.Object);
+            mockedInvestmentsDataClient.Setup(m => m.sendInvestmentsToCashFlow(readInvestmentDto));
 
-            var ex = Record.Exception(() => {
-                createInvestmentUseCase.ExacuteAsync(null);
-            });
+            var createInvestmentUseCase = new CreateInvestmentUseCase(mockedInvestmentRepo.Object, mockedInvestmentMapper.Object, mockedInvestmentsDataClient.Object);
 
-            Assert.NotNull(ex);
-            Assert.IsType(typeof(ArgumentNullException), ex);
+           
+           var results =createInvestmentUseCase.ExacuteAsync(null);
+
+
+
+            Assert.Equal(results.Exception.Message, "One or more errors occurred. (Value cannot be null. (Parameter 'investment'))");
         }
     }
 }

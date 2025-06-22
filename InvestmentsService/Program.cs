@@ -1,4 +1,5 @@
 using InvestmentsService.Data;
+using InvestmentsService.SyncDataServices.Http;
 using InvestmentsService.UseCases;
 using InvestmentsService.UseCases.CreateInvestmentUseCase;
 using InvestmentsService.UseCases.GetInvestmentById;
@@ -37,6 +38,9 @@ else
     builder.Services.AddDbContext<AppDbContext>(opt =>
         opt.UseInMemoryDatabase("InMem"));
 }
+
+builder.Services.AddHttpClient<IInvestmentsDataClient, HttpCashFlowDataClient>();
+
 
 var app = builder.Build();
 
