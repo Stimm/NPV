@@ -1,4 +1,5 @@
 using CashFlowService.Data;
+using CashFlowService.UseCases.CashFlowUseCases.GetAllCashFlowsForInvestment;
 using CashFlowService.UseCases.InvestmentUseCases.GetAllInvestments;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +13,7 @@ builder.Services.AddOpenApi();
 
 //UseCases
 builder.Services.AddScoped<IGetAllInvestmentsUseCase, GetAllInvestmentsUseCase>();
+builder.Services.AddScoped<IGetAllCashFlowsForInvestmentUseCase, GetAllCashFlowsForInvestmentUseCase>();
 //Reposotories
 builder.Services.AddScoped<ICashFlowRepo, CashFlowRepo>();
 
@@ -22,7 +24,7 @@ if (!builder.Environment.IsDevelopment())
     Console.WriteLine("--------->Using SQLDatabase");
     Console.WriteLine("--------->TODO set up SQL Database");
     //builder.Services.AddDbContext<AppDbContext>(opt =>
-    //    opt.UseSqlServer(builder.Configuration.GetConnectionString("PlatformsConn")));
+    //    opt.UseSqlServer(builder.Configuration.GetConnectionString("CashFlowsConn")));
 }
 else
 {
