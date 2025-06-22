@@ -32,4 +32,15 @@ public class InvestmentRepo : IInvestmentRepo
 
         return investments;
     }
+
+    public void UpdateInvestment(Guid id, Investment request)
+    {
+        var investment = _context.Investment.Where(x => x.Id == id).SingleOrDefault();
+
+        investment.Discription = request.Discription;
+        investment.Name = request.Name;
+        investment.DiscountRate = request.DiscountRate;
+
+        _context.SaveChanges();
+    }
 }

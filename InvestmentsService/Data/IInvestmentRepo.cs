@@ -9,4 +9,5 @@ public interface IInvestmentRepo
     IEnumerable<Investment> GetAllInvestments();
     Investment GetInvestment(Guid id);
     void CreateInvestment(Investment investment);
+    void UpdateInvestment(Guid id, Investment request);
 }

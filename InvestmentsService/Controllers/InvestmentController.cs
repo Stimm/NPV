@@ -2,6 +2,7 @@
 using InvestmentsService.UseCases;
 using InvestmentsService.UseCases.CreateInvestmentUseCase;
 using InvestmentsService.UseCases.GetInvestmentById;
+using InvestmentsService.UseCases.UpdateInvestmentUseCase;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InvestmentsService.Controllers;
@@ -13,15 +14,17 @@ public class InvestmentController : ControllerBase
     private IGetAllInvestmentsUseCase _GetAllInvestments;
     private IGetInvestmentById _GetInvestmentById;
     private ICreateInvestmentUseCase _createInvestment;
-
+    private IUpdateInvestmentUseCase _updateInvestment;
 
     public InvestmentController(IGetAllInvestmentsUseCase getAllInvestmentsUseCase, 
         IGetInvestmentById getInvestmentById,
-        ICreateInvestmentUseCase createInvestmentUseCase)
+        ICreateInvestmentUseCase createInvestmentUseCase,
+        IUpdateInvestmentUseCase updateInvestmentUseCase)
     {
         _GetAllInvestments = getAllInvestmentsUseCase;
         _GetInvestmentById = getInvestmentById;
         _createInvestment = createInvestmentUseCase;
+        _updateInvestment = updateInvestmentUseCase;
     }
 
     [HttpGet]
@@ -55,5 +58,15 @@ public class InvestmentController : ControllerBase
         var responce = _createInvestment.ExacuteAsync(request);
 
         return CreatedAtRoute(nameof(GetInvestmentById), new { id = responce.Id }, responce);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult<ReadInvestmentDto>> UpdateInvestment(Guid id, WriteInvestmentDto request)
+    {
+        Console.WriteLine("---> Update Investment EndPoint reached");
+
+        var responce = _updateInvestment.ExacuteAsync(id, request);
+        responce.Id = id;
+        return CreatedAtRoute(nameof(GetInvestmentById), new { id = id }, responce);
     }
 }
