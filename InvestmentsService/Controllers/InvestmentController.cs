@@ -55,7 +55,7 @@ public class InvestmentController : ControllerBase
     {
         Console.WriteLine("---> Create InvestmentEndPoint reached");
 
-        var responce = _createInvestment.ExacuteAsync(request);
+        var responce = await _createInvestment.ExacuteAsync(request);
 
         return CreatedAtRoute(nameof(GetInvestmentById), new { id = responce.Id }, responce);
     }

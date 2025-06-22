@@ -15,6 +15,15 @@ namespace CashFlowService.Controllers
             _getAllInvestments = getAllInvestmentsUseCase;
         }
 
+        [HttpPost]
+        public ActionResult TestInboudConnection()
+        {
+            Console.WriteLine("Inbound Post @ command service");
+
+            return Ok("Test ok from Investment controller");
+        }
+
+
         [HttpGet]
         public ActionResult<IEnumerable<ReadInvestmentDto>> GetAllInvestments()
         {
