@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: cashflow-depl
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: cashflowservice
+    template:
+        metadata:
+            labels:
+                app: cashflowservice
+        spec:
+             containers:
+                - name: cashflowservice
+                  image: timothyryandublin/cashflowservice:latest
